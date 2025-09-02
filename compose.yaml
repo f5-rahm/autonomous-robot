@@ -1,0 +1,41 @@
+services:
+  makerspet:
+    image: kaiaai/kaiaai:iron
+    container_name: makerspet
+    stdin_open: true
+    tty: true
+    restart: unless-stopped
+    ports:
+      - "8888:8888/udp"
+      - "4430:4430/tcp"
+      - "5901:5901"
+    environment:
+      - DISPLAY=:1
+      - ROS_DOMAIN_ID=0
+    volumes:
+      - ~/maps:/root/maps
+      - ./teleop_keyboard.py:/ros_ws/src/kaiaai_teleop/kaiaai_teleop/teleop_keyboard.py
+    devices:
+      - /dev/input/js0:/dev/input/js0
+    networks:
+      - ros_network
+
+  ros_controller:
+    image: kaiaai/kaiaai:iron
+    container_name: ros_controller
+    stdin_open: true
+    tty: true
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      - ROS_DOMAIN_ID=0
+      - PYTHONUNBUFFERED=1
+    volumes:
+      - .:/app
+    working_dir: /app
+    command: /bin/bash -c "source /opt/ros/iron/setup.bash && tail -f /dev/null"
+    depends_on:
+      - makerspet
+    networks:
+      - ros_network
