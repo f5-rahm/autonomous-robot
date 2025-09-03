@@ -15,11 +15,9 @@ This project provides multiple ways to control your MakersPet robot:
 
 ## Supported Robots
 
-This teleop system is designed for **MakersPet robot platforms** including:
+This teleop system is designed for **[MakersPet robot platforms](https://makerspet.com/index.html)** including:
 
-- **Loki** (200mm round base)
-- **Snoopy** (300mm round base) 
-- **Fido** (250mm round base)
+- **[Self-Driving Build Kit](https://makerspet.com/store#!/Arduino-ROS2-Self-Driving-Robot-120mm-Build-Pack/p/725772983)** (120mm round base)
 
 All robots must be running the [Kaia.ai software platform](https://kaia.ai) with ROS2 support and be equipped with:
 - Arduino ESP32 microcontroller
@@ -37,7 +35,7 @@ All robots must be running the [Kaia.ai software platform](https://kaia.ai) with
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/your-username/autonomous-robot.git
+git clone https://github.com/f5-rahm/autonomous-robot.git
 cd autonomous-robot
 ```
 
@@ -109,8 +107,8 @@ With F710 gamepad connected and containers running, the gamepad is automatically
 - **Left Analog Stick**: 
   - Forward/Backward: Y-axis controls linear movement
   - Left/Right: X-axis controls turning
-- **D-Pad**: Discrete movement steps (same as WASD keys)
-- **Face Buttons**:
+- **D-Pad**: Discrete movement steps (same as keyboard WASD keys)
+- **Face Buttons**: Discrete movement steps (same as keyboard WASD keys)
   - Y button: Move forward
   - A button: Move backward  
   - X button: Turn left
