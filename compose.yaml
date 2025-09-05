@@ -17,17 +17,37 @@ services:
       - ./teleop_keyboard.py:/ros_ws/src/kaiaai_teleop/kaiaai_teleop/teleop_keyboard.py
     devices:
       - /dev/input/js0:/dev/input/js0
+    command: >
+      bash -c "
+        # Set up VNC password (change 'your_password' to desired password)
+        mkdir -p ~/.vnc &&
+        echo 'letmein' | vncpasswd -f > ~/.vnc/passwd &&
+        chmod 600 ~/.vnc/passwd &&
+        # Start VNC server automatically
+        vncserver :1 -geometry 1920x1080 -depth 24 -localhost no &&
+        echo 'VNC access available at vnc://192.168.0.5:5901' &&
+        # Keep container running and handle shutdown gracefully
+        cleanup() {
+          echo 'Shutting down MakersPet...'
+          vncserver -kill :1 2>/dev/null || true
+          echo 'MakersPet shutdown complete'
+          exit 0
+        }
+        trap cleanup SIGTERM SIGINT &&
+        # Keep container alive
+        tail -f /dev/null
+      "
     networks:
       - ros_network
 
   ros_controller:
-    image: kaiaai/kaiaai:iron
+    image: kaiaai/kaiaai:iron  # Use same base image as main container
     container_name: ros_controller
     stdin_open: true
     tty: true
     restart: unless-stopped
     ports:
-      - "8080:8080"
+      - "8080:8080"  # For future web interface or API
     environment:
       - ROS_DOMAIN_ID=0
       - PYTHONUNBUFFERED=1
@@ -39,3 +59,9 @@ services:
       - makerspet
     networks:
       - ros_network
+    # Alternative network config if bridge network has issues:
+    # network_mode: "service:makerspet"  # Share network namespace with makerspet
+
+networks:
+  ros_network:
+    driver: bridge
