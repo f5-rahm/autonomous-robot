@@ -19,7 +19,7 @@ services:
       - /dev/input/js0:/dev/input/js0
     command: >
       bash -c "
-        # Set up VNC password (change 'your_password' to desired password)
+        # Set up VNC password
         mkdir -p ~/.vnc &&
         echo 'letmein' | vncpasswd -f > ~/.vnc/passwd &&
         chmod 600 ~/.vnc/passwd &&
@@ -59,8 +59,6 @@ services:
       - makerspet
     networks:
       - ros_network
-    # Alternative network config if bridge network has issues:
-    # network_mode: "service:makerspet"  # Share network namespace with makerspet
 
 networks:
   ros_network:
